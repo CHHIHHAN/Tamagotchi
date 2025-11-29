@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Tamagotchi Lab</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="main.js" defer></script>
+</head>
+<body>
+    <main class="console">
+        <header class="console__header">
+            <div class="header__copy">
+                <p class="eyebrow">PIXEL LAB</p>
+                <h1>Pixel Tamagotchi Generator</h1>
+                <p class="lede">Upload > Cutout > Pixelize > Animate</p>
+            </div>
+            <div class="header__status">
+                <span class="label">System Status</span>
+                <strong id="status">Waiting for upload</strong>
+            </div>
+        </header>
+
+        <section class="panel panel--upload">
+            <h2>01 - FastAPI Tamagotchi</h2>
+            <div class="upload-grid">
+                <form id="upload-form" class="upload-form">
+                    <label class="file-drop" id="drop-zone">
+                        <input type="file" id="asset" accept="image/*" hidden>
+                        <span class="drop-title">Drop or browse an image</span>
+                        <span class="drop-hint">PNG / JPG / WebP | up to 256px</span>
+                        <span id="file-name" class="file-name">No file selected</span>
+                    </label>
+                    <button type="submit" class="btn">Generate Tamagotchi</button>
+                </form>
+                <div class="upload-notes">
+                    <p class="micro">Single upload drives the full pipeline: remove the background, pixelize, and animate.</p>
+                    <p class="micro">Pick an emotion after generation to update the animation instantly.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>03 - Result Gallery</h2>
+            <div class="gallery">
+                <div class="gallery__item">
+                    <p class="caption">Original Image</p>
+                    <div class="frame">
+                        <img id="original-preview" alt="Original preview">
+                    </div>
+                </div>
+                <div class="gallery__item">
+                    <p class="caption">Cutout PNG</p>
+                    <div class="frame">
+                        <img id="cutout-preview" alt="Cutout preview">
+                    </div>
+                </div>
+                <div class="gallery__item">
+                    <p class="caption">Pixel Tamagotchi</p>
+                    <div class="frame checker">
+                        <img id="pixel-preview" alt="Pixel Tamagotchi" title="Click to download">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>05 - Animation</h2>
+            <div class="emotion-grid">
+                <div class="emotion-control">
+                    <label for="mood-select">Emotion Mode</label>
+                    <select id="mood-select">
+                        <option value="calm">Calm</option>
+                        <option value="excited">Excited</option>
+                        <option value="happy">Happy</option>
+                        <option value="sad">Sad</option>
+                        <option value="wink">Wink</option>
+                        <option value="sleepy">Sleepy</option>
+                    </select>
+                </div>
+                <div class="emotion-stage">
+                    <canvas id="animation-canvas" width="16" height="16"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
