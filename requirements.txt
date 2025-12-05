@@ -1,5 +1,8 @@
 ﻿fastapi==0.111.0
 uvicorn[standard]==0.30.1
+openai==1.54.3
+# httpx 0.28+ 移除了 proxies 参数，openai 1.x 仍会传入，需固定旧版
+httpx==0.27.2
 rembg==2.0.56
 pillow==10.3.0
 python-multipart==0.0.9

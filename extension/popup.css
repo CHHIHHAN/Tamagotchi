@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  color: #111827;
+  font-family: "Press Start 2P", "Inter", system-ui, sans-serif;
+  width: 360px;
+}
+
+.panel {
+  width: 100%;
+  border: 2px solid #111827;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 6px 6px 0 #111827;
+  background: #fff;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+.upload-row {
+  margin-bottom: 12px;
+}
+
+.drop-zone {
+  display: block;
+  padding: 12px;
+  border: 2px dashed #111827;
+  border-radius: 10px;
+  background: #f9fafb;
+  cursor: pointer;
+  text-align: center;
+}
+
+.drop-text {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  font-size: 11px;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: #fff;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.card {
+  border: 2px solid #111827;
+  border-radius: 10px;
+  padding: 8px;
+  background: #fff;
+  box-shadow: 4px 4px 0 #111827;
+}
+
+.caption {
+  margin: 0 0 6px;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+
+.frame {
+  background: repeating-conic-gradient(#f3f4f6 0% 25%, transparent 0% 50%);
+  background-size: 8px 8px;
+  border: 2px solid #111827;
+  border-radius: 8px;
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.frame img,
+.frame canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.drop-zone.dragging {
+  border-style: solid;
+  background: #eef2ff;
+}

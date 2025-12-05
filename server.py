@@ -1,11 +1,17 @@
-﻿import base64
+import base64
 import io
+import os
+import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from rembg import remove
 from PIL import Image
+from rembg import remove
+
+load_dotenv()
+sys.dont_write_bytecode = True  # avoid creating __pycache__
 
 app = FastAPI(title="Pixel Tamagotchi Backend")
 
@@ -42,6 +48,10 @@ async def cutout(file: UploadFile = File(...)):
     filename = f"{Path(file.filename).stem}_cutout.png"
 
     return {"filename": filename, "image": f"data:image/png;base64,{encoded}"}
+
+
+async def gpt_cutout(image_bytes: bytes) -> bytes:
+    raise RuntimeError("GPT cutout disabled; using rembg only")
 
 
 def ensure_png(image_bytes: bytes) -> bytes:

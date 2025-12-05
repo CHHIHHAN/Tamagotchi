@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>POCKET PIXEL</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="panel">
+    <h1>POCKET PIXEL</h1>
+    <div class="upload-row">
+      <label class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept="image/*" hidden>
+        <div class="drop-text">Drop image or click to choose</div>
+        <div class="file-name" id="file-name">No file selected</div>
+      </label>
+    </div>
+    <div class="preview-grid">
+      <div class="card">
+        <p class="caption">Cutout</p>
+        <div class="frame">
+          <img id="cutout-preview" alt="">
+        </div>
+      </div>
+      <div class="card">
+        <p class="caption">Pixel Pet</p>
+        <div class="frame">
+          <canvas id="pixel-canvas" width="16" height="16"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

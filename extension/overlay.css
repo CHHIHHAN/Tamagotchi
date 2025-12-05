@@ -1,0 +1,145 @@
+#tg-overlay-root {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483000;
+  font-family: "Press Start 2P", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1f2937;
+}
+
+#tg-overlay-root .tg-toggle {
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 10px;
+  border: 2px solid #111827;
+  box-shadow: 4px 4px 0 #111827;
+  cursor: pointer;
+  pointer-events: auto;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+
+#tg-overlay-root .tg-toggle span {
+  font-size: 12px;
+}
+
+#tg-overlay-root .tg-panel {
+  position: fixed;
+  right: 14px;
+  bottom: 70px;
+  width: 320px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 6px 6px 0 #111827;
+  border: 2px solid #111827;
+  pointer-events: auto;
+}
+
+#tg-overlay-root .tg-panel h4 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+#tg-overlay-root .tg-panel .tg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+#tg-overlay-root .tg-panel label {
+  font-size: 11px;
+  color: #374151;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+#tg-overlay-root .tg-panel input[type="file"] {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  border: 2px dashed #111827;
+  font-size: 12px;
+  background: #f9fafb;
+  color: #111827;
+}
+
+#tg-overlay-root .tg-panel button {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #111827;
+  background: linear-gradient(135deg, #ffffff, #f3f4f6);
+  color: #111827;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #111827;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+#tg-overlay-root .tg-panel button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#tg-overlay-root .tg-status {
+  font-size: 11px;
+  color: #111827;
+  padding: 8px 10px;
+  background: #f9fafb;
+  border-radius: 10px;
+  margin-top: 8px;
+  border: 2px solid #111827;
+}
+
+#tg-overlay-root .tg-preview {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+#tg-overlay-root .tg-preview img,
+#tg-overlay-root .tg-preview canvas {
+  width: 100%;
+  background: repeating-conic-gradient(#f3f4f6 0% 25%, transparent 0% 50%);
+  background-size: 8px 8px;
+  border-radius: 10px;
+  border: 2px solid #111827;
+}
+
+#tg-overlay-root .tg-floating {
+  position: fixed;
+  width: 96px;
+  height: 96px;
+  pointer-events: auto;
+  cursor: grab;
+  right: 16px;
+  bottom: 16px;
+  transform: translate(0, 0);
+  transition: opacity 120ms ease;
+}
+
+#tg-overlay-root .tg-floating.active {
+  opacity: 1;
+}
+
+#tg-overlay-root .tg-floating canvas {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+  filter: drop-shadow(4px 4px 0 #111827);
+}

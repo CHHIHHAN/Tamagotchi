@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Tamagotchi Floating Pet",
+  "version": "0.1.0",
+  "description": "Generate pixel pets with backend GPT/rembg and float them on pages.",
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "host_permissions": ["http://127.0.0.1:8000/*"],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_popup": "extension/popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["extension/content.js"],
+      "css": ["extension/overlay.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "extension/overlay.js",
+        "extension/overlay.css",
+        "pixel.js",
+        "animation.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -16,6 +16,7 @@ const submitButton = form.querySelector("button[type=submit]");
 const animator = new TamagotchiAnimator(animationCanvas);
 const downloadState = { filename: "tamagotchi.png" };
 let currentFile = null;
+const OPENAI_ENDPOINT = "https://api.openai.com/v1/images/edits";
 
 function deriveApiBase() {
     if (window.API_BASE_URL) {
@@ -49,7 +50,52 @@ function readFilePreview(file) {
     });
 }
 
+// 所有抠图请求统一走后端 /cutout；API Key 仅存放在后端 .env 内，前端不暴露
 async function requestCutout(file) {
+    return requestLocalCutout(file);
+}
+
+function getOpenAIKey() {
+    return (
+        window.OPENAI_API_KEY ||
+        localStorage.getItem("tamagotchi_openai_key") ||
+        null
+    );
+}
+
+async function requestGptCutout(file, apiKey) {
+    const formData = new FormData();
+    formData.append("model", "gpt-image-1");
+    formData.append("image", file);
+    formData.append(
+        "prompt",
+        "Remove the background and output a transparent PNG of the main subject. Keep the subject untouched; only make the background fully transparent."
+    );
+    formData.append("size", "1024x1024");
+    formData.append("response_format", "b64_json");
+
+    const response = await fetch(OPENAI_ENDPOINT, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "GPT cutout request failed");
+    }
+
+    const payload = await response.json();
+    const base64 = payload?.data?.[0]?.b64_json;
+    if (!base64) {
+        throw new Error("GPT cutout did not return image data");
+    }
+    return `data:image/png;base64,${base64}`;
+}
+
+async function requestLocalCutout(file) {
     const formData = new FormData();
     formData.append("file", file);
 

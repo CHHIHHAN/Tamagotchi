@@ -171,21 +171,25 @@ export class TamagotchiAnimator {
         this.commitFrame(frame);
     }
 
-    // 4.6 Sleepy: black-only eyes, top pixel fades out then snaps back
+    // 4.6 Sleepy: black-only eyes, body compresses to 75% height, eyes follow, top pixel fades
     renderSleepy(delta) {
-        const frame = this.prepareFrameWithBody();
-        const { leftX, rightX, baseY } = this.getSimpleEyeLayout(true);
-
         this.sleepElapsed += delta;
         if (this.sleepElapsed >= this.sleepDuration) {
             this.sleepElapsed %= this.sleepDuration;
             this.sleepDuration = 3000 + Math.random() * 2000;
         }
         const phase = this.sleepElapsed / this.sleepDuration;
-        const opacity = this.computeSleepyOpacity(phase);
+        const opacity = this.computeSleepyOpacity(phase, this.sleepDuration);
+        const scale = this.computeSleepyScale(phase, this.sleepDuration);
 
-        this.drawSleepyEye(frame, leftX, baseY, opacity);
-        this.drawSleepyEye(frame, rightX, baseY, opacity);
+        const frame = this.prepareEmptyFrame();
+        const transform = this.drawAnchoredVerticalStretch(frame, scale);
+
+        const { leftX, rightX, baseY } = this.getSimpleEyeLayout(true);
+        const mappedY = this.mapYWithTransform(baseY, transform);
+
+        this.drawSleepyEye(frame, leftX, mappedY, opacity);
+        this.drawSleepyEye(frame, rightX, mappedY, opacity);
         this.commitFrame(frame);
     }
 
@@ -295,14 +299,37 @@ export class TamagotchiAnimator {
         this.setPixel(frame, x, topY, [mix(baseColor[0], 0), mix(baseColor[1], 0), mix(baseColor[2], 0), 255]);
     }
 
-    computeSleepyOpacity(phase) {
-        if (phase < 0.7) {
-            return 1 - phase / 0.7; // fade out
+    computeSleepyOpacity(phase, durationMs = 4000) {
+        const holdMs = 1000;
+        const totalMs = Math.max(durationMs, holdMs + 200);
+        const t = phase * totalMs;
+        const compressMs = totalMs - holdMs;
+        if (t < compressMs) {
+            const p = t / compressMs;
+            return 1 - p; // fade to closed as body compresses
         }
-        if (phase < 0.85) {
-            return 0; // hold closed
+        if (t < totalMs) {
+            return 0; // hold closed while flattened
         }
-        return 1; // snap open
+        return 1; // snap open with body
+    }
+
+    computeSleepyScale(phase, durationMs = 4000) {
+        const holdMs = 1000; // hold flattened for 1s
+        const totalMs = Math.max(durationMs, holdMs + 200); // avoid zero
+        const t = phase * totalMs;
+        const compressMs = totalMs - holdMs;
+        // compress from 1 -> 0.75 over compressMs
+        if (t < compressMs) {
+            const p = t / compressMs;
+            return 1 - 0.25 * p;
+        }
+        // hold flat
+        if (t < totalMs) {
+            return 0.75;
+        }
+        // snap back (in case phase slightly exceeds)
+        return 1;
     }
 
     updateWinkState(timestamp) {
@@ -317,7 +344,7 @@ export class TamagotchiAnimator {
     }
 
     scheduleNextWink(baseTimestamp) {
-        const delay = 1000 + Math.random() * 1000; // 1–2s
+        const delay = 1000 + Math.random() * 1000; // 1 – 2s
         this.winkState.next = baseTimestamp + delay;
     }
 
@@ -517,13 +544,19 @@ export class TamagotchiAnimator {
 
     overlayEdgeShake(frame) {
         if (!this.edgePixels?.length) return;
-        const jitter = () => Math.floor(Math.random() * 3) - 1; // -1,0,1
+        const jitter = () => {
+            const r = Math.random();
+            if (r < 0.6) return 0; // favor no movement to reduce blur
+            if (r < 0.8) return 1;
+            return -1;
+        };
         this.edgePixels.forEach(edge => {
             const dx = jitter();
             const dy = jitter();
             const nx = clamp(edge.x + dx, 0, this.width - 1);
             const ny = clamp(edge.y + dy, 0, this.height - 1);
-            this.setPixel(frame, nx, ny, edge.color);
+            // keep outline opaque to avoid transparent blur
+            this.setPixel(frame, nx, ny, [edge.color[0], edge.color[1], edge.color[2], 255]);
         });
     }
 
